@@ -14,10 +14,18 @@ let selectedDate = null;
 const btnStart = document.querySelector('button[data-start]');
 btnStartDisabled(true);
 
+const inputEl = document.querySelector('#datetime-picker');
+btnStartDisabled(true);
+
+
 btnStart.addEventListener('click', onStartClick);
 
 function btnStartDisabled(isDisabled) {
   btnStart.disabled = isDisabled;
+}
+
+function inputDisabled(isDisabled) {
+  inputEl.disabled = isDisabled;
 }
 
 function updateClockFace({ days, hours, minutes, seconds }) {
@@ -34,12 +42,14 @@ function pad(value) {
 function onStartClick() {
   let timeDifference = selectedDate - nowDate;
   btnStartDisabled(true);
+  inputDisabled(true);
   const setIntervalId = setInterval(() => {
     const seconds = new Date(timeDifference).getSeconds();
     timeDifference = new Date(timeDifference).setSeconds(seconds - 1);
     const time = convertMs(timeDifference);
     if (time.days === 0 && time.hours === 0 && time.minutes === 0 && time.seconds === 0) {
       clearInterval(setIntervalId);
+      inputDisabled(false);
     }
     updateClockFace(time);
   }, 1000);
